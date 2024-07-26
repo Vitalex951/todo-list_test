@@ -24,10 +24,10 @@ export const todosPageSlice = createSlice({
             state.todosDate = action.payload
         },
         updateTodo(state, action: PayloadAction<ITodo>) {
-            state.todosDate =  state.todosDate.map(item => item.id === action.payload.id ? action.payload : item)
+            state.todosDate = state.todosDate.map(item => item.id === action.payload.id ? action.payload : item)
         },
         createTodo(state, action: PayloadAction<ITodo>) {
-            state.todosDate = [...state.todosDate, action.payload]
+            state.todosDate = [ ...state.todosDate, action.payload ]
         },
 
         //очистка данных
@@ -51,5 +51,5 @@ export const todosPageSlice = createSlice({
     },
 })
 
-export const {actions: productPageActions} = todosPageSlice;
-export const {reducer: productPageReducer} = todosPageSlice;
+export const { actions: todosPageActions } = todosPageSlice;
+export const { reducer: todosPageReducer } = todosPageSlice;
