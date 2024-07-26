@@ -11,7 +11,7 @@ function App() {
 
     return (
       <main className={ 'm-0' }>
-          <h1 className='font-bold size-21 caret-emerald-400 m-0'>
+          <h1 className=''>
               Todos
           </h1>
       </main>

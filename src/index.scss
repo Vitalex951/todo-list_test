@@ -2,3 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./styles/variables/global";
+
+body {
+    background-color: var(--overlay-color);
+    min-height: 100vh;
+    min-width: 100vw;
+    color: var(--font-color)
+}
