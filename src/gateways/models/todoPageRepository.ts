@@ -8,14 +8,17 @@ export interface ITodoPageRepository {
      * Возвращает всех задач
      */
     getTodos(): Promise<ITodo[]>;
+
     /**
      * Удаление задачи по id
      */
     deleteTodo(todoId: number): Promise<ITodo[]>;
+
     /**
      * Редактирование задачи по id
      */
     updateTodo(todo: ITodo): Promise<ITodo>;
+
     /**
      * Создание новой задачи
      */

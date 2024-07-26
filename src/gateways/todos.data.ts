@@ -1,6 +1,6 @@
 import { ITodo } from "./models/todo.ts";
 
-export const todos: ITodo[] = [
+export const todosMock: ITodo[] = [
     {
         id: 1,
         title: "Завершить проект по React",

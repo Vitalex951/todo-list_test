@@ -1,13 +1,17 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { ThunkExtraArg } from "./models.ts";
 import { useDispatch } from "react-redux";
+import { $api } from "../api/api.ts";
+import { todosPageReducer } from "./slice/todosSlice.ts";
 
-export const rootReducer = combineReducers({});
+export const rootReducer = combineReducers({
+    todosPage: todosPageReducer
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 const extraArg: ThunkExtraArg = {
-    api: any
+    api: $api
 };
 
 export const store = configureStore({
@@ -15,9 +19,8 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         thunk: {
             extraArgument: extraArg
-        }
-
-    })
+        },
+    }),
 })
 
 export type AppDispatch = ReturnType<typeof store>['dispatch']
