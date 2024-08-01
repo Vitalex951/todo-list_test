@@ -15,6 +15,7 @@ import { Button } from "../../components/Button/Button.tsx";
 import { TodoEditor } from "../../components/todo/TodoEditor/TodoEditor.tsx";
 import { ITodo } from "../../gateways/models/todo.ts";
 import { createTodo } from "../../store/service/createTodo.ts";
+import { todosPageActions, todosPageSlice } from "../../store/slice/todosSlice.ts";
 
 const mockTodo = {
     id: 1,
@@ -36,6 +37,18 @@ export const TodosPage = () => {
         dispatch( fetchTodos() )
     }, [] )
 
+    useEffect(() => {
+        let timerId
+        if(!!error) {
+            timerId =  setTimeout(() => {
+                dispatch(todosPageActions.setError(null))
+            }, 3000 )
+        }
+
+        return () => {
+            clearTimeout(timerId)
+        }
+    }, [error, todosPageActions])
 
     const onClickChangeIsCreateNewTodo = useCallback( () => {
         setIsCreateNewTodo( prev => !prev )
@@ -45,6 +58,10 @@ export const TodosPage = () => {
         dispatch( createTodo( newTodo ) )
         setIsCreateNewTodo( false )
     }, [createTodo] )
+
+    const onClickGenerateError = useCallback(() => {
+        dispatch(todosPageActions.setError('Какая-то ошибка'))
+    }, [todosPageActions])
 
     const shouldRenderTodos = !!todos && todos.length > 0
 
@@ -57,8 +74,9 @@ export const TodosPage = () => {
     }
     return (
       <div className={ 'flex flex-col gap-4 p-4' }>
-          <div>
+          <div className={'flex gap-4'}>
               <Button text={ textCreateTodo } onClick={ onClickChangeIsCreateNewTodo }/>
+              <Button className={styles.error} text={'Сгенерировать ошибку'} onClick={onClickGenerateError} />
           </div>
           { isCreateNewTodo && <TodoEditor onClickSave={ onClickCreateNewTodo } todo={ mockTodo }
                                            disabled={ isLoading }/> }
