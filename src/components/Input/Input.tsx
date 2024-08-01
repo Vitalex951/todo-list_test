@@ -1,5 +1,5 @@
 import { classNames } from "../../shared/utils/classNames/classNames.ts";
-import { ChangeEvent } from "react";
+import { ChangeEvent, memo } from "react";
 
 interface InputProps {
     className?: string
@@ -8,7 +8,7 @@ interface InputProps {
     placeholder?: string
 }
 
-export const Input = ( props: InputProps ) => {
+export const Input = memo(( props: InputProps ) => {
     const {
         onChange,
         className,
@@ -27,4 +27,4 @@ export const Input = ( props: InputProps ) => {
         className={ classNames( 'w-full p-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-600 text-xs', {}, [className] ) }
       />
     );
-};
+});

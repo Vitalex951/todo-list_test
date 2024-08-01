@@ -1,7 +1,7 @@
 import { ITodo } from "../../gateways/models/todo.ts";
 import { TodoEditor } from "./TodoEditor/TodoEditor.tsx";
 import { Todo } from "./Todo/Todo.tsx";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { updateTodo } from "../../store/service/updateTodo.ts";
 import { deleteTodo } from "../../store/service/deleteTodo.ts";
 import { useAppDispatch } from "../../store/config/store.ts";
@@ -11,7 +11,7 @@ interface TodoProps {
     disabled: boolean
 }
 
-export const TodoLayout = ( props: TodoProps ) => {
+export const TodoLayout = memo(( props: TodoProps ) => {
     const dispatch = useAppDispatch()
 
     const {
@@ -44,4 +44,4 @@ export const TodoLayout = ( props: TodoProps ) => {
       </>
 
     );
-};
+})

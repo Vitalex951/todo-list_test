@@ -1,5 +1,6 @@
 import { classNames } from "../../shared/utils/classNames/classNames.ts";
 import styles from './Button.module.scss'
+import { memo } from "react";
 
 interface ButtonProps {
     text: string
@@ -8,7 +9,7 @@ interface ButtonProps {
     className?: string
 }
 
-export const Button = ( props: ButtonProps ) => {
+export const Button = memo( ( props: ButtonProps ) => {
     const {
         onClick,
         text,
@@ -19,10 +20,10 @@ export const Button = ( props: ButtonProps ) => {
     return (
       <button
         className={ classNames( styles.button, {}, [className] ) }
-        onClick={onClick}
-        disabled={disabled}
+        onClick={ onClick }
+        disabled={ disabled }
       >
           { text }
       </button>
     );
-};
+} )

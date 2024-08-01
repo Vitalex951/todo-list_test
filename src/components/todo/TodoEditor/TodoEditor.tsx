@@ -1,7 +1,7 @@
 import styles from '../Todo.module.scss';
 import { ITodo } from "../../../gateways/models/todo.ts";
 import { classNames } from "../../../shared/utils/classNames/classNames.ts";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import DatePicker from "react-widgets/DatePicker";
 import { Input } from "../../Input/Input.tsx";
 import { TextArea } from "../../TextArea/TextArea.tsx";
@@ -30,17 +30,18 @@ export const TodoEditor = ( props: TodoProps ) => {
     const [descriptionValue, setDescriptionValue] = useState( description ?? '' )
     const [dateValue, setDateValue] = useState( date ? new Date( date ) : new Date() )
 
-    const onChangeTitle = ( value: string ) => {
+    const onChangeTitle = useCallback( ( value: string ) => {
+        console.log('value')
         setTitleValue( value )
-    }
-    const onChangeDescription = ( value: string ) => {
+    }, [] )
+    const onChangeDescription = useCallback( ( value: string ) => {
         setDescriptionValue( value )
-    }
-    const onChangeDate = ( date: Date ) => {
+    }, [] )
+    const onChangeDate = useCallback( ( date: Date ) => {
         setDateValue( date )
-    }
+    }, [] )
 
-    const onClickSaveHandler = () => {
+    const onClickSaveHandler = useCallback( () => {
         const newTodo = {
             description: descriptionValue,
             date: dateValue,
@@ -48,7 +49,7 @@ export const TodoEditor = ( props: TodoProps ) => {
             id
         }
         onClickSave?.( newTodo )
-    }
+    }, [onClickSave, descriptionValue, dateValue, titleValue, id] )
 
     const isDisabledButtonOnSave = !titleValue || !descriptionValue || !dateValue
 

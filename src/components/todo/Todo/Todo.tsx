@@ -4,6 +4,7 @@ import { classNames } from "../../../shared/utils/classNames/classNames.ts";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale/ru";
 import { Button } from "../../Button/Button.tsx";
+import { useCallback } from "react";
 
 interface TodoProps {
     todo: ITodo
@@ -26,13 +27,13 @@ export const Todo = ( props: TodoProps ) => {
         date,
     } = todo
 
-    const onDeleteTodo = () => {
+    const onDeleteTodo = useCallback( () => {
         onDelete?.( todo.id )
-    }
+    }, [] )
 
-    const onClickEditTaskHandler = () => {
+    const onClickEditTaskHandler = useCallback( () => {
         onClickEditTask?.()
-    }
+    }, [] )
 
     const formattedDate = format( date, 'dd.MM.yyyy', { locale: ru } );
     return (
@@ -51,7 +52,8 @@ export const Todo = ( props: TodoProps ) => {
           <div className={ classNames( styles.date, {}, ['relative min-h-3.5 cursor-default'] ) }>
               <span className={ 'absolute bottom-0 right-0' }>{ formattedDate }</span>
           </div>
-          <Button onClick={ onClickEditTaskHandler } text={ 'Редактировать' }/>
+          <Button disabled={ disabled } onClick={ onClickEditTaskHandler }
+                  text={ 'Редактировать' }/>
       </div>
     );
 };
