@@ -1,20 +1,19 @@
-import styles from './Todo.module.scss';
-import { ITodo } from "../../gateways/models/todo.ts";
-import { classNames } from "../../shared/utils/classNames/classNames.ts";
+import styles from '../Todo.module.scss';
+import { ITodo } from "../../../gateways/models/todo.ts";
+import { classNames } from "../../../shared/utils/classNames/classNames.ts";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale/ru";
 
 interface TodoProps {
     todo: ITodo,
-    onDelete?: ( id: number ) => void,
     onChange?: () => void,
+    disabled: boolean
 }
 
-export const Todo = ( props: TodoProps ) => {
+export const TodoEditor = ( props: TodoProps ) => {
     const {
         todo,
         onChange,
-        onDelete
     } = props
 
     const {

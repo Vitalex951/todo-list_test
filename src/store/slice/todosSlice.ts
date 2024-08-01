@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITodo } from "../../gateways/models/todo.ts";
 import { fetchTodos } from "../service/fetchTodos.ts";
 import { TodosSchema } from "./types/todosSchema.ts";
+import { deleteTodo } from "../service/deleteTodo.ts";
 
 const initialState: TodosSchema = {
     todosDate: undefined,
-    isLoading: true,
+    isMainLoading: true,
+    isLoading: false,
     error: null,
 };
 
@@ -46,17 +48,32 @@ export const todosPageSlice = createSlice({
         builder
           // получение всех задач
           .addCase(fetchTodos.pending, (state: TodosSchema) => {
-              state.isLoading = true;
+              state.isMainLoading = true;
               state.error = null;
           })
           .addCase(fetchTodos.fulfilled, (state: TodosSchema, action: PayloadAction<ITodo[]>) => {
-              state.isLoading = false;
+              state.isMainLoading = false;
               state.todosDate = action.payload;
           })
           .addCase(fetchTodos.rejected, (state: TodosSchema, action) => {
+              state.isMainLoading = false;
+              state.error = action.payload || null;
+          })
+
+          // удаление задачи
+          .addCase(deleteTodo.pending, (state: TodosSchema) => {
+              state.isLoading = true;
+              state.error = null;
+          })
+          .addCase(deleteTodo.fulfilled, (state: TodosSchema, action: PayloadAction<ITodo[]>) => {
+              state.isLoading = false;
+              state.todosDate = action.payload;
+          })
+          .addCase(deleteTodo.rejected, (state: TodosSchema, action) => {
               state.isLoading = false;
               state.error = action.payload || null;
           })
+
 
     },
 })
