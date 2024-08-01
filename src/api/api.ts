@@ -17,10 +17,13 @@ mock.onGet( '/todos' ).reply( () => {
 
 mock.onPost( '/todos' ).reply( ( config ) => {
     const newTodo = JSON.parse( config.data );
-    todosMock.push( newTodo );
+    console.log( 'newTodo', newTodo )
+    const lastId = todosMock.reduce( ( acc, el ) => el.id > acc ? el.id : acc, todosMock[0].id || 0 )
+    console.log( 'lastId', lastId )
+    todosMock.push( { ...newTodo, id: lastId + 1 } );
     return new Promise( ( resolve ) => {
         setTimeout( () => {
-            resolve( [201, newTodo] );
+            resolve( [200, { ...newTodo, id: lastId + 1 }] );
         }, 1000 );
     } );
 } );
@@ -29,7 +32,7 @@ mock.onDelete( new RegExp( `/todos/\\d+` ) ).reply( ( config ) => {
     const id = parseInt( config.url!.split( '/' ).pop()!, 10 );
 
     const index = todosMock.findIndex( todo => todo.id === id );
-    console.log('index', index)
+    console.log( 'index', index )
     return new Promise( ( resolve, reject ) => {
         setTimeout( () => {
             if ( index !== -1 ) {

@@ -26,9 +26,9 @@ export const TodoEditor = ( props: TodoProps ) => {
         date,
         id
     } = todo
-    const [titleValue, setTitleValue] = useState( title ?? '' )
+    const [titleValue, setTitleValue] = useState<string>( title ?? '' )
     const [descriptionValue, setDescriptionValue] = useState( description ?? '' )
-    const [dateValue, setDateValue] = useState( date?  new Date(date) : new Date() )
+    const [dateValue, setDateValue] = useState( date ? new Date( date ) : new Date() )
 
     const onChangeTitle = ( value: string ) => {
         setTitleValue( value )
@@ -41,18 +41,17 @@ export const TodoEditor = ( props: TodoProps ) => {
     }
 
     const onClickSaveHandler = () => {
-        const newTodo: ITodo = {
-            title: titleValue,
+        const newTodo = {
             description: descriptionValue,
-            id,
-            date: dateValue
+            date: dateValue,
+            title: titleValue,
+            id
         }
         onClickSave?.( newTodo )
     }
 
     const isDisabledButtonOnSave = !titleValue || !descriptionValue || !dateValue
-    console.log('dateValue', dateValue)
-    console.log('dateValue', )
+
     return (
       <>
           <div
@@ -61,7 +60,8 @@ export const TodoEditor = ( props: TodoProps ) => {
                      onChange={ onChangeTitle }/>
               <TextArea placeholder={ 'Введите описание' } value={ descriptionValue }
                         onChange={ onChangeDescription }/>
-              <DatePicker onChange={ onChangeDate } defaultValue={ dateValue } placeholder="m/dd/yy"/>
+              <DatePicker onChange={ onChangeDate } defaultValue={ dateValue }
+                          placeholder="m/dd/yy"/>
 
               <Button
                 disabled={ isDisabledButtonOnSave || disabled } onClick={ onClickSaveHandler }
