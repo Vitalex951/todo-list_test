@@ -1,43 +1,46 @@
 import { ITodo } from "../../gateways/models/todo.ts";
 import { TodoEditor } from "./TodoEditor/TodoEditor.tsx";
 import { Todo } from "./Todo/Todo.tsx";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { updateTodo } from "../../store/service/updateTodo.ts";
+import { deleteTodo } from "../../store/service/deleteTodo.ts";
+import { useAppDispatch } from "../../store/config/store.ts";
 
 interface TodoProps {
     todo: ITodo
-    onDelete?: ( id: number ) => void
-    onChange?: ( todo: ITodo ) => void
-    isTodoEditor?: boolean
     disabled: boolean
 }
 
 export const TodoLayout = ( props: TodoProps ) => {
+    const dispatch = useAppDispatch()
+
     const {
+        disabled,
         todo,
-        onChange,
-        onDelete,
-        isTodoEditor = false,
-      disabled = false
     } = props
 
-    const onChangeTodoHandler = useCallback( ( todo: ITodo ) => {
-        onChange?.( todo )
-    }, [onChange] )
+    const [isTodoEditor, setIsTodoEditor] = useState( false )
 
-    const onDeleteTodoHandler = useCallback( ( idTodo: number ) => {
-        console.log('idTodo', idTodo)
-        onDelete?.( idTodo )
-    }, [onDelete] )
+    const onClickIsTodoEditor = () => {
+        setIsTodoEditor( prev => !prev )
+    }
 
-    const {
-        title,
-        description,
-        date,
-        id
-    } = todo
+    const onChangeTodo = useCallback( ( todo: ITodo ) => {
+        dispatch( updateTodo( todo ) )
+        setIsTodoEditor(false)
+    }, [] )
+
+    const onDeleteTodoHandler = useCallback( ( todoId: number ) => {
+        dispatch( deleteTodo( todoId ) )
+    }, [] )
+
 
     return ( <>
-          { !isTodoEditor ? <Todo disabled={disabled} onDelete={onDeleteTodoHandler} todo={ todo }/> : <TodoEditor disabled={disabled} todo={ todo }/> }
+          { isTodoEditor
+            ?
+            <TodoEditor onClickSave={onChangeTodo} disabled={ disabled } todo={ todo }/>
+            :
+            <Todo onClickEditTask={onClickIsTodoEditor} disabled={ disabled } onDelete={ onDeleteTodoHandler } todo={ todo }/> }
       </>
 
     );

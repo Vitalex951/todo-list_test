@@ -1,7 +1,8 @@
 import { useAppDispatch } from "../../store/config/store.ts";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
+    errorTodosSelector,
     isLoadingTodosSelector,
     isMainLoadingTodosSelector,
     todosSelector
@@ -9,9 +10,7 @@ import {
 import { fetchTodos } from "../../store/service/fetchTodos.ts";
 import { Loader } from "../../components/Loader/Loader.tsx";
 import { TodoLayout } from "../../components/todo/TodoLayout.tsx";
-import { ITodo } from "../../gateways/models/todo.ts";
-import { updateTodo } from "../../store/service/updateTodo.ts";
-import { deleteTodo } from "../../store/service/deleteTodo.ts";
+import styles from './TodosPage.module.scss'
 
 export const TodosPage = () => {
     const dispatch = useAppDispatch()
@@ -19,18 +18,10 @@ export const TodosPage = () => {
     const todos = useSelector( todosSelector )
     const isMainLoading = useSelector( isMainLoadingTodosSelector )
     const isLoading = useSelector( isLoadingTodosSelector )
-    const error = useSelector( todosSelector )
+    const error = useSelector( errorTodosSelector )
 
     useEffect( () => {
         dispatch( fetchTodos() )
-    }, [] )
-
-    const onChangeTodo = useCallback( ( todo: ITodo ) => {
-        dispatch( updateTodo( todo ) )
-    }, [] )
-
-    const onDeleteTodo = useCallback( ( todoId: number ) => {
-        dispatch( deleteTodo( todoId ) )
     }, [] )
 
     if ( isMainLoading ) {
@@ -48,11 +39,14 @@ export const TodosPage = () => {
                   key={ td.id }
                   disabled={ isLoading }
                   todo={ td }
-                  onChange={ onChangeTodo }
-                  onDelete={ onDeleteTodo }
                 /> ) ) }
           </div>
           { isLoading && <div className={ 'flex justify-center' }><Loader/></div> }
+          {!!error && <div>
+            <span className={styles.error}>
+              {error}
+            </span>
+          </div>}
       </>
 
     );

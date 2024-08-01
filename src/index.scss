@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "./styles/variables/global";
+@import "react-widgets/styles.css";
 
 body {
     background-color: var(--overlay-color);

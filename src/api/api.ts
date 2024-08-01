@@ -41,7 +41,7 @@ mock.onDelete( new RegExp( `/todos/\\d+` ) ).reply( ( config ) => {
     } );
 } );
 
-mock.onPatch( new RegExp( `/todos/\\d+` ) ).reply( ( config ) => {
+mock.onPatch( new RegExp( `/todos` ) ).reply( ( config ) => {
     const updatedTodo = JSON.parse( config.data );
     const index = todosMock.findIndex( todo => todo.id === updatedTodo.id );
     return new Promise( ( resolve, reject ) => {

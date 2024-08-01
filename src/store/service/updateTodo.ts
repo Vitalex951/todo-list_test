@@ -3,22 +3,22 @@ import { ITodo } from "../../gateways/models/todo.ts";
 import { ThunkConfig } from "../models.ts";
 
 export const updateTodo = createAsyncThunk<
-  ITodo[],
+  ITodo,
   ITodo,
   ThunkConfig<string>
 >(
   'todosSlice/updateTodo',
-  async (todo, thunkAPI) => {
+  async ( todo, thunkAPI ) => {
       const { extra, rejectWithValue } = thunkAPI;
       try {
-          const response = await extra.api.patch('/todos', todo)
-          console.log('updateTodo', response)
-          if (!response) {
+          const response = await extra.api.patch( '/todos', todo )
+          if ( !response ) {
               throw new Error();
           }
+          console.log( ' response.data', response.data )
           return response.data;
       } catch ( e ) {
-          return rejectWithValue('Товар не найден');
+          return rejectWithValue( 'Товар не найден' );
       }
   },
 );

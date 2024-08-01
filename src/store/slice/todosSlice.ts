@@ -3,6 +3,7 @@ import { ITodo } from "../../gateways/models/todo.ts";
 import { fetchTodos } from "../service/fetchTodos.ts";
 import { TodosSchema } from "./types/todosSchema.ts";
 import { deleteTodo } from "../service/deleteTodo.ts";
+import { updateTodo } from "../service/updateTodo.ts";
 
 const initialState: TodosSchema = {
     todosDate: undefined,
@@ -15,31 +16,6 @@ export const todosPageSlice = createSlice({
     name: 'todosSlice',
     initialState,
     reducers: {
-        setTodos(state, action: PayloadAction<ITodo[]>) {
-            state.todosDate = action.payload
-        },
-        deleteTodo(state, action: PayloadAction<ITodo[]>) {
-            state.todosDate = action.payload
-        },
-        updateTodo(state, action: PayloadAction<ITodo>) {
-            state.todosDate = state.todosDate.map(item => item.id === action.payload.id ? action.payload : item)
-        },
-        createTodo(state, action: PayloadAction<ITodo>) {
-            state.todosDate = [ ...state.todosDate, action.payload ]
-        },
-
-        //очистка данных
-        clearData(state) {
-            state.linkedProducts = undefined
-            state.comparingProducts = undefined
-            state.product = undefined
-            state.error = null
-            state.isLoading = true
-        },
-
-        setLoading(state, action: PayloadAction<boolean>) {
-            state.isLoading = action.payload;
-        },
         setError(state, action: PayloadAction<string | null>) {
             state.error = action.payload;
         },
@@ -74,6 +50,19 @@ export const todosPageSlice = createSlice({
               state.error = action.payload || null;
           })
 
+          // обновление задачи
+          .addCase(updateTodo.pending, (state: TodosSchema) => {
+              state.isLoading = true;
+              state.error = null;
+          })
+          .addCase(updateTodo.fulfilled, (state: TodosSchema, action: PayloadAction<ITodo>) => {
+              state.isLoading = false;
+              state.todosDate = state?.todosDate?.map(item => item.id === action.payload.id ? action.payload : item)
+          })
+          .addCase(updateTodo.rejected, (state: TodosSchema, action) => {
+              state.isLoading = false;
+              state.error = action.payload || null;
+          })
 
     },
 })
