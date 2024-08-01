@@ -1,0 +1,10 @@
+.button {
+    &:hover {
+        color: var(--focus-color)
+    }
+
+    &:disabled {
+        color: var(--disabled-color)
+    }
+
+}
