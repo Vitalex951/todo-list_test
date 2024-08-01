@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./styles/variables/global";
+@import "react-widgets/styles.css";
+
+body {
+    background-color: var(--overlay-color);
+    min-height: 100vh;
+    min-width: 100vw;
+    color: var(--font-color)
+}
