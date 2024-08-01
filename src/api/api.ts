@@ -7,7 +7,13 @@ const $api = axios.create();
 const mock = new MockAdapter($api);
 
 // Моки запросов
-mock.onGet('/todos').reply(200, todosMock);
+mock.onGet('/todos').reply(() => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve([200, todosMock]);
+        }, 1000);
+    });
+});
 
 mock.onPost('/todos').reply((config) => {
     const newTodo = JSON.parse(config.data);

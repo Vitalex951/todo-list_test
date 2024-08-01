@@ -1,7 +1,7 @@
-import { RootState } from "../store.ts";
+import { RootState } from "../config/store.ts";
 
 const todosPageSelector = (state: RootState) => state.todosPage;
 
-export const todos = (state: RootState) => todosPageSelector(state).todosDate;
-export const isLoadingTodos = (state: RootState) => todosPageSelector(state).isLoading;
-export const errorTodos = (state: RootState) => todosPageSelector(state).error;
+export const todosSelector = (state: RootState) => todosPageSelector(state).todosDate;
+export const isLoadingTodosSelector = (state: RootState) => todosPageSelector(state).isLoading;
+export const errorTodosSelector = (state: RootState) => todosPageSelector(state).error;

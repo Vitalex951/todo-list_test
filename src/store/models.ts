@@ -1,4 +1,4 @@
-import { RootState } from "./store.ts";
+import { RootState } from "./config/store.ts";
 import { AxiosInstance } from "axios";
 
 export interface ThunkExtraArg {

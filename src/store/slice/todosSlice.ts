@@ -1,13 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITodo } from "../../gateways/models/todo.ts";
+import { fetchTodos } from "../service/fetchTodos.ts";
+import { TodosSchema } from "./types/todosSchema.ts";
 
-type TodosPageState = {
-    todosDate: ITodo[] | undefined;
-    isLoading: boolean;
-    error: string | null;
-};
-
-const initialState: TodosPageState = {
+const initialState: TodosSchema = {
     todosDate: undefined,
     isLoading: true,
     error: null,
@@ -47,6 +43,20 @@ export const todosPageSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        builder
+          // получение всех задач
+          .addCase(fetchTodos.pending, (state: TodosSchema) => {
+              state.isLoading = true;
+              state.error = null;
+          })
+          .addCase(fetchTodos.fulfilled, (state: TodosSchema, action: PayloadAction<ITodo[]>) => {
+              state.isLoading = false;
+              state.todosDate = action.payload;
+          })
+          .addCase(fetchTodos.rejected, (state: TodosSchema, action) => {
+              state.isLoading = false;
+              state.error = action.payload || null;
+          })
 
     },
 })
