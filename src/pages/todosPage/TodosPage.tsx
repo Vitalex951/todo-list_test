@@ -1,6 +1,5 @@
-import { useAppDispatch } from "../../store/config/store.ts";
+import { useAppDispatch, useAppSelector } from "../../store/config/store.ts";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import {
     errorTodosSelector,
     isLoadingTodosSelector,
@@ -15,7 +14,7 @@ import { Button } from "../../components/Button/Button.tsx";
 import { TodoEditor } from "../../components/todo/TodoEditor/TodoEditor.tsx";
 import { ITodo } from "../../gateways/models/todo.ts";
 import { createTodo } from "../../store/service/createTodo.ts";
-import { todosPageActions, todosPageSlice } from "../../store/slice/todosSlice.ts";
+import { todosPageActions } from "../../store/slice/todosSlice.ts";
 
 const mockTodo = {
     id: 1,
@@ -28,17 +27,17 @@ export const TodosPage = () => {
 
     const [isCreateNewTodo, setIsCreateNewTodo] = useState( false )
 
-    const todos = useSelector( todosSelector )
-    const isMainLoading = useSelector( isMainLoadingTodosSelector )
-    const isLoading = useSelector( isLoadingTodosSelector )
-    const error = useSelector( errorTodosSelector )
+    const todos = useAppSelector( todosSelector )
+    const isMainLoading = useAppSelector( isMainLoadingTodosSelector )
+    const isLoading = useAppSelector( isLoadingTodosSelector )
+    const error = useAppSelector( errorTodosSelector )
 
     useEffect( () => {
         dispatch( fetchTodos() )
     }, [] )
 
     useEffect(() => {
-        let timerId
+        let timerId = 0
         if(!!error) {
             timerId =  setTimeout(() => {
                 dispatch(todosPageActions.setError(null))
@@ -46,7 +45,9 @@ export const TodosPage = () => {
         }
 
         return () => {
-            clearTimeout(timerId)
+            if(timerId) {
+                clearTimeout(timerId)
+            }
         }
     }, [error, todosPageActions])
 

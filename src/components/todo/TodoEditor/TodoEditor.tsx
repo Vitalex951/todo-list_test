@@ -31,14 +31,16 @@ export const TodoEditor = ( props: TodoProps ) => {
     const [dateValue, setDateValue] = useState( date ? new Date( date ) : new Date() )
 
     const onChangeTitle = useCallback( ( value: string ) => {
-        console.log('value')
+        console.log( 'value' )
         setTitleValue( value )
     }, [] )
     const onChangeDescription = useCallback( ( value: string ) => {
         setDescriptionValue( value )
-    }, [] )
-    const onChangeDate = useCallback( ( date: Date ) => {
-        setDateValue( date )
+    }, [] );
+    const onChangeDate = useCallback( ( date: Date | null | undefined ) => {
+        if ( date ) {
+            setDateValue( date )
+        }
     }, [] )
 
     const onClickSaveHandler = useCallback( () => {

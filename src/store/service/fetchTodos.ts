@@ -4,7 +4,7 @@ import { ThunkConfig } from "../models.ts";
 
 export const fetchTodos = createAsyncThunk<
   ITodo[],
-  never,
+  void,
   ThunkConfig<string>
 >(
   'todosSlice/fetchTodos',
@@ -12,7 +12,6 @@ export const fetchTodos = createAsyncThunk<
       const { extra, rejectWithValue } = thunkAPI;
       try {
           const response = await extra.api.get('/todos')
-          console.log('fetchTodos', response)
           if (!response) {
               throw new Error();
           }
